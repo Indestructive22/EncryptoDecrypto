@@ -3,11 +3,12 @@ from decrypt_module import decrypt_char, decrypt_message
 import random
 
 class WordEncoder:
-    def __init__(self, word, listo,cs):
-        self.cs=cs
+    def __init__(self, word, listo, isUp, addedExtra):
         self.word = word
         self.listo = listo
-        self.encoded_word = encrypt_message(word, listo,cs)
+        self.isUp = isUp
+        self.addedExtra = addedExtra
+        self.encoded_word, self.updatedAddedExtra = encrypt_message(word, listo, isUp, addedExtra)
 
 def main():
     word_instances = []
@@ -24,16 +25,17 @@ def main():
         if choice == '1':
             word = input("Enter the word to encode: ")
             listo = []
-            cs = list()
+            isUp = []
             for char in word:
                 if char != " ":
                     listo.append(random.randint(1, 26))
-                    cs.append(0)
+                    isUp.append(char.isupper())
                 else:
                     listo.append(0)
-                    cs.append(0)
-                print(listo)
-            new_word_instance = WordEncoder(word, listo, cs)
+                    isUp.append(False)
+                    
+                # print(listo)
+            new_word_instance = WordEncoder(word, listo, isUp, [False]*(len(word)))
             word_instances.append(new_word_instance)
             print(f"Encoded message: {new_word_instance.encoded_word}")
 
@@ -44,7 +46,7 @@ def main():
                 word_to_decode = input("Enter the word to decode: ")
                 for instance in word_instances:
                     if instance.encoded_word == word_to_decode:
-                        decoded_word = decrypt_message(word_to_decode, instance.listo, instance.cs)
+                        decoded_word = decrypt_message(word_to_decode, instance)
                         print(f"Decoded message: {decoded_word}")
                         # Remove the break statement here
                         # break
