@@ -1,13 +1,13 @@
-def decrypt_char(char, shift, isUp, addedExtra):
-    return doTransformation(char, shift, isUp, addedExtra) if char.isalpha() else char
+def decrypt_char(char, shift, needSub):
+    return doTransformation(char, shift, needSub)
     
-def doTransformation(char, shift, isUp, addedExtra):
-    char_code = ord(char) - shift if not addedExtra else ord(char) - shift - 7
-    return chr(char_code).lower() if not isUp else chr(char_code)
+def doTransformation(char, shift, needSub):
+    n = ord(char) - shift if not needSub else ord(char) - shift + 26
+    return chr(n)
 
 
 def decrypt_message(encrypted_message, instance):
     decrypted_message = ""
     for i,char in enumerate(encrypted_message):
-        decrypted_message += str(decrypt_char(char, instance.listo[i], instance.isUp[i], instance.addedExtra[i]))
+        decrypted_message += str(decrypt_char(char, instance.listo[i], instance.needSub[i]))
     return decrypted_message
